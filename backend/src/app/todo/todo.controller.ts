@@ -19,6 +19,7 @@ import { CreateTodoSwagger } from './swagger/create-todo.swagger';
 import { ShowTodoSwagger } from './swagger/show-todo.swagger';
 import { UpdateTodoSwagger } from './swagger/update-todo.swagger';
 import { BadRequestSwagger } from 'src/helpers/swagger/bad-request.swagger';
+import { NotFoundSwagger } from './../../helpers/swagger/not-found.swagger';
 
 @Controller('api/v1/todos')
 @ApiTags('todos')
@@ -64,7 +65,11 @@ export class TodoController {
     description: 'Invalid data',
     type: BadRequestSwagger,
   })
-  @ApiResponse({ status: 404, description: 'Task not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'Task not found',
+    type: NotFoundSwagger,
+  })
   @ApiOperation({ summary: 'Display task data' })
   async show(
     @Param('id', new ParseUUIDPipe())
@@ -79,7 +84,11 @@ export class TodoController {
     description: 'Task updated successfully',
     type: UpdateTodoSwagger,
   })
-  @ApiResponse({ status: 404, description: 'Task not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'Task not found',
+    type: NotFoundSwagger,
+  })
   @ApiOperation({ summary: 'Update task data' })
   async update(
     @Param('id', new ParseUUIDPipe())
@@ -94,7 +103,11 @@ export class TodoController {
     status: 204,
     description: 'Task removed successfully',
   })
-  @ApiResponse({ status: 404, description: 'Task not found' })
+  @ApiResponse({
+    status: 404,
+    description: 'Task not found',
+    type: NotFoundSwagger,
+  })
   @ApiOperation({ summary: 'Remove a task' })
   @HttpCode(HttpStatus.NO_CONTENT)
   async destroy(
