@@ -1,7 +1,9 @@
+import { Text } from './../components/Text/text';
+
 export const Home = () => {
   return (
     <div>
-      <p>Home</p>
+      <Text fontWeight='bold'>Home</Text>
     </div>
   );
 };
