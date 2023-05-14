@@ -1,7 +1,13 @@
 import React from 'react';
+import { Theme } from './theme';
+import { Router } from './routes/index';
 
-function App() {
-	return <div className="App"></div>;
-}
-
-export default App;
+export const App = () => {
+  return (
+    <div className="App">
+      <Theme>
+        <Router />
+      </Theme>
+    </div>
+  );
+};
