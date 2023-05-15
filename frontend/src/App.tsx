@@ -1,6 +1,6 @@
 import React from 'react';
-import { Theme, GlobalStyles } from './theme';
-import { Router } from './routes/index';
+import { Theme, GlobalStyles } from 'theme';
+import { Router } from 'routes';
 
 export const App = () => {
   return (

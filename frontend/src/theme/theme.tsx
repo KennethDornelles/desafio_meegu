@@ -1,9 +1,10 @@
 import { ThemeProvider } from 'styled-components';
 
-const fontSizes: any = [14, 20, 96]
+const fontSizes: any = [14, 18, 20, 96]
 fontSizes.body = fontSizes[0]
-fontSizes.extraLarge = fontSizes[1]
-fontSizes.displayExtraLarge = fontSizes[2]
+fontSizes.bodyLarge = fontSizes[1]
+fontSizes.extraLarge = fontSizes[2]
+fontSizes.displayExtraLarge = fontSizes[3]
 
 const primary = '#2567B4'
 const secondary = '#F9B531'
