@@ -1,4 +1,4 @@
-import { Column, Text, Row, Input, Button  } from 'components';
+import { Column, Text, Row, Input, Button, List } from 'components';
 
 export const Home = () => {
   return (
@@ -7,6 +7,11 @@ export const Home = () => {
       <Row width="100%">
         <Input placeholder="Enter a task name here" />
         <Button>OK</Button>
+        <List items={[
+          { label: 'Task 1' },
+          { label: 'Task 2' },
+          { label: 'Task 3' }
+        ]}/>
       </Row>
     </Column>
   );
