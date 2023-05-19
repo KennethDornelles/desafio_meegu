@@ -5,23 +5,18 @@ import { useTodo } from 'hooks';
 const SECONDS_DEFAULT = 5;
 
 export const Home = () => {
-  const { tasks, getAll } = useTodo;
+  const { tasks, getAllTodos, createTodo } = useTodo;
 
   const [taskName, setTaskName] = useState('');
   const [seconds, setSeconds] = useState(SECONDS_DEFAULT);
   const [timer, setTimer] = useState<any>();
   const [stage, setStage] = useState('ready');
 
-  const handleOKButton = () => {
-    if (!taskName) return;
-
-    setTasks((previous) => {
-      const copy = [...previous];
-      copy.push({ label: taskName });
-      return copy;
-    });
+  const handleOKButton = useCallback(async () => {
+    await createTodo({ task: taskName, isDone: 0 });
+    await getAllTodos();
     setTaskName('');
-  };
+  }, [createTodo, getAllTodos, taskName]);
 
   const secondsToTime = (secs: number) => {
     const divisorMinutes = secs % 3600;
@@ -144,8 +139,8 @@ export const Home = () => {
   }, [handlePauseButton, handleStopButton, handleRestartButton, stage]);
 
   useEffect(() => {
-    getAll();
-  }, [getAll]);
+    getAllTodos();
+  }, [getAllTodos]);
 
   return (
     <Column width="600px" margin="0 auto">
