@@ -1,4 +1,4 @@
-import { Theme, GlobalStyles } from 'theme';
+import { Theme, GlobalStyles } from 'themes';
 import { Router } from 'routes';
 
 export const App = () => {

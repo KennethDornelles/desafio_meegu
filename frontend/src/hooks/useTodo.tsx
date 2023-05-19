@@ -1,9 +1,11 @@
-import { useCallback, useState } from 'react';
-import { TodoService } from 'services';
+import { useState, useCallback } from 'react';
+
 import { ITodo } from 'interfaces';
+import { TodoService } from 'services';
 
 export const useTodo = () => {
   const [tasks, setTasks] = useState<ITodo[]>([]);
+
   const getAllTodos = useCallback(async () => {
     const { status, data } = await TodoService.getAllTodos();
 
@@ -12,14 +14,14 @@ export const useTodo = () => {
     setTasks(data);
   }, []);
 
-  const createTodo = useCallback(async (todo: Pick<ITodo, 'task', 'isDone'>) => {
-    const [status] = await TodoService.createTodo(todo);
+  const createTodo = useCallback(async (todo: Pick<ITodo, 'task' | 'isDone'>) => {
+    const { status } = await TodoService.createTodo(todo);
 
     if (status !== 201) throw new Error();
   }, []);
-  
-  const updateTodo = useCallback(async (todo: Pick<ITodo, 'task', 'isDone'>) => {
-    const [status] = await TodoService.updateTodo(todo);
+
+  const updateTodo = useCallback(async (id: string, todo: Pick<ITodo, 'task' | 'isDone'>) => {
+    const { status } = await TodoService.updateTodo(id, todo);
 
     if (status !== 200) throw new Error();
   }, []);
@@ -28,6 +30,6 @@ export const useTodo = () => {
     tasks,
     getAllTodos,
     createTodo,
-    updateTodo
+    updateTodo,
   };
 };

@@ -1,11 +1,12 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, Fragment, useEffect, useMemo, useCallback } from 'react';
+
 import { Input, Text, Button, Row, Column, List, Logo, Icon } from 'components';
 import { useTodo } from 'hooks';
 
-const SECONDS_DEFAULT = 5;
+const SECONDS_DEFAULT = 1500;
 
 export const Home = () => {
-  const { tasks, getAllTodos, createTodo, updateTodo } = useTodo;
+  const { tasks, getAllTodos, createTodo, updateTodo } = useTodo();
 
   const [taskName, setTaskName] = useState('');
   const [seconds, setSeconds] = useState(SECONDS_DEFAULT);
@@ -68,6 +69,15 @@ export const Home = () => {
     setStage('ready');
   }, [handlePauseButton]);
 
+  const handleDoneButton = useCallback(async () => {
+    const task = tasks[taskIndex];
+    if (task) {
+      await updateTodo(task.id, { task: task.task, isDone: 1 });
+      await getAllTodos();
+      setStage('ready');
+    }
+  }, [updateTodo, getAllTodos, taskIndex, tasks]);
+
   const handleStageStatus = useMemo(() => {
     switch (stage) {
       case 'ready':
@@ -84,30 +94,22 @@ export const Home = () => {
     }
   }, [stage]);
 
-  const handleDoneButton = useCallback(async () => {
-    const task = tasks[taskIndex];
-    if (task) {
-      await updateTodo(task.id, { ...task, isDone: 1 });
-      getAllTodos();
-    }
-  }, [taskIndex, tasks, updateTodo, getAllTodos]);
-
   const handleStageButtons = useMemo(() => {
     switch (stage) {
       case 'ready':
         return (
-          <>
+          <Fragment>
             <Button variant="primary" onClick={startTimer}>
               <Text fontFamily="secondary" fontSize="bodyExtraLarge" fontWeight="bold" color="primary">
                 START
               </Text>
             </Button>
-          </>
+          </Fragment>
         );
 
       case 'in_progress':
         return (
-          <>
+          <Fragment>
             <Row py="20px">
               <Button variant="primary" p="10px 20px" mx="5px" onClick={startTimer}>
                 <Icon variant="play" />
@@ -119,7 +121,7 @@ export const Home = () => {
                 <Icon variant="stop" />
               </Button>
             </Row>
-          </>
+          </Fragment>
         );
 
       case 'finished':
@@ -136,16 +138,16 @@ export const Home = () => {
 
       default:
         return (
-          <>
+          <Fragment>
             <Button variant="primary" onClick={startTimer}>
               <Text fontFamily="secondary" fontSize="bodyExtraLarge" fontWeight="bold" color="primary">
                 START
               </Text>
             </Button>
-          </>
+          </Fragment>
         );
     }
-  }, [ handleDoneButton,handlePauseButton, handleStopButton, handleRestartButton, stage ]);
+  }, [handlePauseButton, handleStopButton, handleRestartButton, handleDoneButton, stage]);
 
   useEffect(() => {
     getAllTodos();

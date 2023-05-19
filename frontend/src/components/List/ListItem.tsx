@@ -1,4 +1,4 @@
-import { Column, Text, Row, Icon } from 'components';
+import { Column, Row, Text, Icon } from 'components';
 
 export type ListItemProps = {
   index: number;
@@ -9,7 +9,7 @@ export type ListItemProps = {
   isActive: boolean;
 };
 
-export const ListItem: React.FC<ListItemProps> = ({ id, task, isDone, isActive, onClick }) => {
+export const ListItem: React.FC<ListItemProps> = ({ index, id, task, isDone, isActive, onClick }) => {
   return (
     <Column
       width="100%"
@@ -25,7 +25,7 @@ export const ListItem: React.FC<ListItemProps> = ({ id, task, isDone, isActive, 
     >
       <Row>
         <Text flex={1}>{task}</Text>
-        {isDone === 1 && <Icon variant='done-white' />}
+        {isDone === 1 && <Icon variant="done-white" />}
       </Row>
     </Column>
   );

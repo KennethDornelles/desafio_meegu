@@ -1,6 +1,6 @@
 import { Column } from 'components';
+import { ITodo } from '../../interfaces';
 import { ListItem } from './ListItem';
-import { ITodo } from 'interfaces';
 
 type ListProps = {
   items: ITodo[];
@@ -8,7 +8,7 @@ type ListProps = {
   onClick: (index: number) => void;
 };
 
-export const List: React.FC<ListProps> = ({ items, selectedIndex, onclick }) => {
+export const List: React.FC<ListProps> = ({ items, selectedIndex, onClick }) => {
   return (
     <Column py="10px">
       {items.map((item, index) => (
