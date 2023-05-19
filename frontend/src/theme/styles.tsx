@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { ThemeType } from './theme';
 
-export const GlobalStyles = createGlobalStyle<{ theme?: ThemeType }>`
+export const GlobalStyles = createGlobalStyle<{ theme: ThemeType }>`
   * {
     margin: 0;
     padding: 0;
@@ -11,6 +11,6 @@ export const GlobalStyles = createGlobalStyle<{ theme?: ThemeType }>`
   }
 
   body {
-    background-color: ${({ theme }) => theme?.colors.primary};
+    background-color: ${({ theme }) => theme.colors.primary};
   }
 `;

@@ -6,7 +6,7 @@ export const Home = () => {
   const [tasks, setTasks] = useState<{ label: string }[]>([]);
 
   const handleOKButton = () => {
-    if(!taskName) return;
+    if (!taskName) return;
 
     setTasks((previous) => {
       const copy = [...previous];
@@ -18,11 +18,23 @@ export const Home = () => {
 
   return (
     <Column width="600px" margin="0 auto">
-      <Column width='100%' py='25px' alignItems='center' >
+      <Column width="100%" py="25px" alignItems="center">
         <Logo />
       </Column>
 
-      <Text fontWeight="bold" fontSize="bodyLarge" my="10px" paddingLeft="10px">
+      <Column width="100%" minHeight="300px" p='20px' bg="rgba(255, 255, 255, 0.2)" borderRadius="4px" alignItems='center'>
+        <Text fontFamily='secondary' fontSizes='bodyExtraLarge'>Ready</Text>
+        
+        <Text fontFamily='secondary' fontWeight='bold' fontSizes='displayExtraLarge' py='30px'>25:00</Text>
+        
+        <Button variant="primary">
+          <Text fontFamily="secondary" fontSizes="bodyExtraLarge" fontWeight="bold" color="primary">
+            START
+          </Text>
+        </Button>
+      </Column>
+
+      <Text fontWeight="bold" fontSizes="bodyLarge" my="10px" paddingLeft="10px">
         Tasks
       </Text>
       <Row width="100%">

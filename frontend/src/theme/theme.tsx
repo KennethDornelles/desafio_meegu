@@ -1,26 +1,28 @@
 import { ThemeProvider } from 'styled-components';
 
-const fontSizes: any = [14, 18, 20, 96]
-fontSizes.body = fontSizes[0]
-fontSizes.bodyLarge = fontSizes[1]
-fontSizes.extraLarge = fontSizes[2]
-fontSizes.displayExtraLarge = fontSizes[3]
+const fontSizes: any = [14, 18, 20, 96];
+fontSizes.body = fontSizes[0];
+fontSizes.bodyLarge = fontSizes[1];
+fontSizes.bodyExtraLarge = fontSizes[2];
+fontSizes.displayExtraLarge = fontSizes[3];
 
-const primary = '#2567B4'
-const secondary = '#F9B531'
+const primary = '#2567B4';
+const secondary = '#F9B531';
 
 const theme = {
   fontSizes,
+  fonts: {
+    primary: 'Raleway',
+    secondary: 'Roboto',
+  },
   colors: {
     primary,
-    secondary
-  }
+    secondary,
+  },
 };
 
 export type ThemeType = typeof theme;
 
-export const Theme: React.FC<{children?: React.ReactNode}> = ({ children }) => {
-  return (
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
-  )
-}
+export const Theme: React.FC = ({ children }) => {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};
