@@ -5,12 +5,13 @@ import { useTodo } from 'hooks';
 const SECONDS_DEFAULT = 5;
 
 export const Home = () => {
-  const { tasks, getAllTodos, createTodo } = useTodo;
+  const { tasks, getAllTodos, createTodo, updateTodo } = useTodo;
 
   const [taskName, setTaskName] = useState('');
   const [seconds, setSeconds] = useState(SECONDS_DEFAULT);
   const [timer, setTimer] = useState<any>();
   const [stage, setStage] = useState('ready');
+  const [taskIndex, setTaskIndex] = useState(0);
 
   const handleOKButton = useCallback(async () => {
     await createTodo({ task: taskName, isDone: 0 });
@@ -83,6 +84,14 @@ export const Home = () => {
     }
   }, [stage]);
 
+  const handleDoneButton = useCallback(async () => {
+    const task = tasks[taskIndex];
+    if (task) {
+      await updateTodo(task.id, { ...task, isDone: 1 });
+      getAllTodos();
+    }
+  }, [taskIndex, tasks, updateTodo, getAllTodos]);
+
   const handleStageButtons = useMemo(() => {
     switch (stage) {
       case 'ready':
@@ -119,7 +128,7 @@ export const Home = () => {
             <Button variant="primary" p="10px 20px" mx="5px" onClick={handleRestartButton}>
               <Icon variant="restart" />
             </Button>
-            <Button variant="primary" p="10px 20px" mx="5px">
+            <Button variant="primary" p="10px 20px" mx="5px" onClick={handleDoneButton}>
               <Icon variant="done" />
             </Button>
           </Row>
@@ -136,7 +145,7 @@ export const Home = () => {
           </>
         );
     }
-  }, [handlePauseButton, handleStopButton, handleRestartButton, stage]);
+  }, [ handleDoneButton,handlePauseButton, handleStopButton, handleRestartButton, stage ]);
 
   useEffect(() => {
     getAllTodos();
@@ -180,7 +189,7 @@ export const Home = () => {
         <Button onClick={handleOKButton}>OK</Button>
       </Row>
 
-      <List items={tasks} />
+      <List items={tasks} selectedIndex={taskIndex} onClick={setTaskIndex} />
     </Column>
   );
 };
