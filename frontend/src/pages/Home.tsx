@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { Column, Text, Row, Input, Button, List, Logo, Icon } from 'components';
+import { useState, useMemo, useCallback } from 'react';
+import { Input, Text, Button, Row, Column, List, Logo, Icon } from 'components';
 
 const SECONDS_DEFAULT = 5;
 
@@ -22,16 +22,20 @@ export const Home = () => {
   };
 
   const secondsToTime = (secs: number) => {
-    const divisorMinute = secs % 3600;
+    const divisorMinutes = secs % 3600;
+    let minutes: any = Math.floor(divisorMinutes / 60);
+    minutes = String(minutes).padStart(2, '0');
 
-    const minutes = Math.floor(divisorMinute / 60);
-    const seconds = Math.ceil(divisorMinute % 60);
+    const divisorSeconds = divisorMinutes % 60;
+    let seconds: any = Math.ceil(divisorSeconds);
+    seconds = String(seconds).padStart(2, '0');
 
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    return `${minutes}:${seconds}`;
   };
 
   const startTimer = () => {
     setStage('in_progress');
+
     const timerInterval = setInterval(() => {
       setSeconds((previousSeconds) => {
         if (previousSeconds === 0) {
@@ -48,32 +52,94 @@ export const Home = () => {
     setTimer(timerInterval);
   };
 
-  const handlePauseButton = () => {
+  const handleRestartButton = useCallback(() => {
+    setStage('ready');
+    setSeconds(SECONDS_DEFAULT);
     clearInterval(timer);
     setTimer(undefined);
-  };
+  }, [timer]);
 
-  const handleStopButton = () => {
+  const handlePauseButton = useCallback(() => {
+    clearInterval(timer);
+    setTimer(undefined);
+  }, [timer]);
+
+  const handleStopButton = useCallback(() => {
     handlePauseButton();
     setSeconds(SECONDS_DEFAULT);
     setStage('ready');
-  };
+  }, [handlePauseButton]);
 
   const handleStageStatus = useMemo(() => {
-    switch(stage){
+    switch (stage) {
       case 'ready':
-        return 'Ready'
-      
+        return 'Ready';
+
       case 'in_progress':
-        return 'Time to work!'
-      
+        return 'Time to work!';
+
       case 'finished':
-        return 'Finished'
+        return 'Finished';
 
       default:
         return 'Ready';
     }
-  }, [stage])
+  }, [stage]);
+
+  const handleStageButtons = useMemo(() => {
+    switch (stage) {
+      case 'ready':
+        return (
+          <>
+            <Button variant="primary" onClick={startTimer}>
+              <Text fontFamily="secondary" fontSize="bodyExtraLarge" fontWeight="bold" color="primary">
+                START
+              </Text>
+            </Button>
+          </>
+        );
+
+      case 'in_progress':
+        return (
+          <>
+            <Row py="20px">
+              <Button variant="primary" p="10px 20px" mx="5px" onClick={startTimer}>
+                <Icon variant="play" />
+              </Button>
+              <Button variant="primary" p="10px 20px" mx="5px" onClick={handlePauseButton}>
+                <Icon variant="pause" />
+              </Button>
+              <Button variant="primary" p="10px 20px" mx="5px" onClick={handleStopButton}>
+                <Icon variant="stop" />
+              </Button>
+            </Row>
+          </>
+        );
+
+      case 'finished':
+        return (
+          <Row py="20px">
+            <Button variant="primary" p="10px 20px" mx="5px" onClick={handleRestartButton}>
+              <Icon variant="restart" />
+            </Button>
+            <Button variant="primary" p="10px 20px" mx="5px">
+              <Icon variant="done" />
+            </Button>
+          </Row>
+        );
+
+      default:
+        return (
+          <>
+            <Button variant="primary" onClick={startTimer}>
+              <Text fontFamily="secondary" fontSize="bodyExtraLarge" fontWeight="bold" color="primary">
+                START
+              </Text>
+            </Button>
+          </>
+        );
+    }
+  }, [handlePauseButton, handleStopButton, handleRestartButton, stage]);
 
   return (
     <Column width="600px" margin="0 auto">
@@ -89,47 +155,31 @@ export const Home = () => {
         borderRadius="4px"
         alignItems="center"
       >
-        <Text fontFamily="secondary" fontSizes="bodyExtraLarge">
+        <Text fontFamily="secondary" fontSize="bodyExtraLarge">
           {handleStageStatus}
         </Text>
 
-        <Text fontFamily="secondary" fontWeight="bold" fontSizes="displayExtraLarge" py="30px">
+        <Text fontFamily="secondary" fontWeight="bold" fontSize="displayExtraLarge" py="30px">
           {secondsToTime(seconds)}
         </Text>
 
-        <Button variant="primary" onClick={startTimer}>
-          <Text fontFamily="secondary" fontSizes="bodyExtraLarge" fontWeight="bold" color="primary">
-            START
-          </Text>
-        </Button>
-
-        <Row py="20px">
-          <Button variant="primary" p="10px 20px" mx="5px" onClick={startTimer}>
-            <Icon variant="play" />
-          </Button>
-          <Button variant="primary" p="10px 20px" mx="5px" onClick={handlePauseButton}>
-            <Icon variant="pause" />
-          </Button>
-          <Button variant="primary" p="10px 20px" mx="5px" onClick={handleStopButton}>
-            <Icon variant="stop" />
-          </Button>
-          <Button variant="primary" p="10px 20px" mx="5px" onClick={startTimer}>
-            <Icon variant="restart" />
-          </Button>
-          <Button variant="primary" p="10px 20px" mx="5px">
-            <Icon variant="done" />
-          </Button>
-        </Row>
+        {handleStageButtons}
       </Column>
 
-      <Text fontWeight="bold" fontSizes="bodyLarge" my="10px" paddingLeft="10px">
+      <Text fontWeight="bold" fontSize="bodyLarge" my="10px" pl="10px">
         Tasks
       </Text>
       <Row width="100%">
-        <Input placeholder="Enter a task name here" value={taskName} onChange={(e) => setTaskName(e.target.value)} />
+        <Input
+          flex={1}
+          placeholder="Enter a task name here..."
+          value={taskName}
+          onChange={(e) => setTaskName(e.target.value)}
+        />
         <Button onClick={handleOKButton}>OK</Button>
-        <List items={tasks} />
       </Row>
+
+      <List items={tasks} />
     </Column>
   );
 };
