@@ -6,7 +6,6 @@ This is a simple TODO App that I created and posted a video on my YouTube channe
 
 ## Before Installation
 
-You should run the backend project, you can [take a look here](https://github.com/leobritob/youtube-todoapp-backend).
 
 ## Installation
 ```bash
