@@ -35,7 +35,7 @@ export class TodoController {
     isArray: true,
   })
   async index() {
-    return await this.todoService.findAll();
+    return await this.todoService.findAll({ order: { createdAt: 'DESC' } });
   }
 
   @Post()

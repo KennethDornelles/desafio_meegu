@@ -1,11 +1,13 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { Input, Text, Button, Row, Column, List, Logo, Icon } from 'components';
+import { useTodo } from 'hooks';
 
 const SECONDS_DEFAULT = 5;
 
 export const Home = () => {
+  const { tasks, getAll } = useTodo;
+
   const [taskName, setTaskName] = useState('');
-  const [tasks, setTasks] = useState<{ label: string }[]>([]);
   const [seconds, setSeconds] = useState(SECONDS_DEFAULT);
   const [timer, setTimer] = useState<any>();
   const [stage, setStage] = useState('ready');
@@ -140,6 +142,10 @@ export const Home = () => {
         );
     }
   }, [handlePauseButton, handleStopButton, handleRestartButton, stage]);
+
+  useEffect(() => {
+    getAll();
+  }, [getAll]);
 
   return (
     <Column width="600px" margin="0 auto">

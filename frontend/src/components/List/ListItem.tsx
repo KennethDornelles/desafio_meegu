@@ -1,10 +1,12 @@
 import { Column, Text } from 'components';
 
 export type ListItemProps = {
-  label: string,
+  id: string,
+  task: string,
+  isDone: number
 }
 
-export const ListItem: React.FC<ListItemProps> = ({ label }) => {
+export const ListItem: React.FC<ListItemProps> = ({ id, task, isDone }) => {
   return (
     <Column
       width='100%'
@@ -13,7 +15,7 @@ export const ListItem: React.FC<ListItemProps> = ({ label }) => {
       mb='10px'
       borderRadius='4px'
       borderLeft='5px solid #fff'>
-      <Text>{label}</Text>
+      <Text>{task}</Text>
     </Column>
   )
 } 
